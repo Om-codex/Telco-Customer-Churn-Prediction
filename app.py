@@ -1,4 +1,16 @@
 import streamlit as st
+# --- PAGE CONFIG ---
+st.set_page_config(page_title="Telco Churn Prediction", layout="wide")
+st.markdown("""
+<script>
+    if (history.scrollRestoration) {
+        history.scrollRestoration = 'manual';
+    }
+    window.onbeforeunload = function () {
+        window.scrollTo(0,0);
+    }
+</script>
+""", unsafe_allow_html=True)
 from streamlit_option_menu import option_menu
 import base64
 import time
@@ -16,189 +28,25 @@ from io import BytesIO
 from sklearn.metrics import accuracy_score,confusion_matrix,f1_score,classification_report,precision_score,recall_score
 
 # Convert image to base64
+@st.cache_data
 def image_to_base64(img_path):
     img = Image.open(img_path)
     buffer = BytesIO()
     img.save(buffer, format="PNG")
-    img_str = base64.b64encode(buffer.getvalue()).decode()
-    return img_str
+    return base64.b64encode(buffer.getvalue()).decode()
+
+@st.cache_data
+def load_data():
+    return pd.read_csv("cleaned_dataset.csv")
 
 img_base64 = image_to_base64("churn_banner.png")
-# --- CUSTOM STYLES ---
-st.markdown(f"""
-<style>
-/* ====== GLOBAL BACKGROUND ====== */
-.stApp {{
-    background: radial-gradient(circle at top left, rgba(255,255,255,0.06), transparent 60%), 
-                linear-gradient(135deg, #0A0A0A, #1A1A1A);
-    color: #F0F0F0;
-}}
 
-.css-18e3th9, .css-1d391kg {{
-    background-color: rgba(255, 255, 255, 0.04) !important;
-    backdrop-filter: blur(6px);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-}}
-            
-/* Change the sidebar background color */
-[data-testid="stSidebar"] {{
-    background-color: rgba(255, 255, 255, 0.04) !important;
-}}
-        
-
-            
-/* ====== HERO BANNER ====== */
-.hero-banner {{
-    position: relative;
-    width: 100%;
-    height: 320px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.4);
-    margin-bottom: 2rem;
-    background: url("data:image/png;base64,{img_base64}");
-    background-size: cover;
-    background-position: center;
-    filter: brightness(80%);
-}}
-
-.hero-overlay {{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(15, 23, 42, 0.6);
-    z-index: 1;
-}}
-
-.hero-text {{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #e0f2fe;
-    text-align: center;
-    z-index: 2;
-    opacity: 0;
-    animation: fadeInGlow 1.8s ease-out forwards;
-}}
-
-
-.hero-text h1 {{
-    font-size: 50px;
-    font-weight: 800;
-    text-shadow: 0 0 20px rgba(56,189,248,0.8), 0 0 40px rgba(37,99,235,0.6);
-}}
-
-/* ===== Cinematic Fade + Lift + Glow ===== */
-@keyframes fadeInGlow {{
-    0% {{
-        opacity: 0;
-        transform: translate(-50%, calc(-50% + 50px)) scale(0.98);
-        text-shadow: 0 0 0 rgba(96,165,250,0);
-    }}
-    60% {{
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-        text-shadow: 0 0 25px rgba(96,165,250,0.7);
-    }}
-    80% {{
-        text-shadow: 0 0 40px rgba(96,165,250,0.5), 0 0 70px rgba(59,130,246,0.3);
-    }}
-    100% {{
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-        text-shadow: 0 0 25px rgba(56,189,248,0.6);
-    }}
-}}
-
-/* ===== BUTTON STYLE (your base + futuristic colors) ===== */
-.stButton>button {{
-    background-color: #3B82F6
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    padding: 0.75rem 2rem;
-    box-shadow: 0 0 12px rgba(56,189,248,0.6);
-    transition: all 0.3s ease;
-}}
-
-.stButton > button:hover {{
-    background: linear-gradient(135deg, #3B82F6, #60A5FA) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 0 18px rgba(96,165,250,0.4);
-    color: black;
-}}
-/* ===== FORM SUBMIT BUTTON STYLE (same design) ===== */
-.stForm .stButton>button {{
-    background: linear-gradient(90deg, #38bdf8, #1e40af);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 1.1rem;
-    padding: 0.75rem 2rem;
-    box-shadow: 0 0 12px rgba(56,189,248,0.6);
-    transition: all 0.3s ease;
-}}
-
-.stForm .stButton>button:hover {{
-    background: linear-gradient(90deg, #1e3a8a, #60a5fa);
-    transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(96,165,250,0.8);
-}}
-.footer-badge-wrapper {{
-    width: 100%;
-    display: flex;
-    justify-content: flex-end; /* align right */
-    margin-top: 40px;
-    margin-bottom: 20px;
-}}
-
-.footer-badge {{
-    display: flex;
-    align-items: center;
-    background: #00aaff; /* neon-ish blue */
-    padding: 10px 18px;
-    border-radius: 30px; /* pill shape */
-    box-shadow: 0 0 10px #00aaff; /* neon glow */
-}}
-
-.footer-badge img {{
-    width: 42px;
-    height: 42px;
-    border-radius: 50%; /* circle */
-    margin-right: 10px;
-}}
-
-.footer-badge-text {{
-    font-size: 24px;
-    font-weight: 900;
-    color: black; /* text color */
-    letter-spacing: 0px;
-}}
-/* Hover Animation */
-.footer-badge:hover {{
-    transform: scale(1.06);
-    box-shadow: 0 0 16px #00cfff;
-}}
-
-
-</style>
-""", unsafe_allow_html=True)
+with open("styles.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 logo = Image.open("logo.png")
 logo_base64 = image_to_base64("logo.png")  # ensure correct path
 base_logo_base64 = image_to_base64("pfp.png")
-
-
-
-# --- PAGE CONFIG ---
-st.set_page_config(page_title="Telco Churn Prediction", layout="wide")
 
 # --- SESSION STATE CONTROL ---
 if "show_sidebar" not in st.session_state:
@@ -216,7 +64,7 @@ if "show_sidebar" not in st.session_state:
 if st.session_state.stage == 'Home Page':
     # HERO BANNER SECTION
     st.markdown(f"""
-    <div class="hero-banner">
+    <div class="hero-banner" style="background-image: url('data:image/png;base64,{img_base64}');">
         <div class="hero-overlay"></div>
         <div class="hero-text" style="
             display:flex; 
@@ -237,6 +85,7 @@ if st.session_state.stage == 'Home Page':
         </div>
     </div>
     """, unsafe_allow_html=True)
+
 
 
     # Subheading
@@ -315,7 +164,7 @@ if st.session_state.stage == 'Show_navigation':
                 "Contract & Billing"
             ])
 
-            df = pd.read_csv('cleaned_dataset.csv')
+            df = load_data()
 
             # ----------------- Overview Page -----------------
             if page == "Overview":
@@ -1082,7 +931,7 @@ if st.session_state.stage == 'Show_navigation':
                 *Thank you for exploring the app! Feel free to test different scenarios and see how customer behaviors influence churn probability.* 🚀
             """)
 
-target_url = "https://github.com/Om-codex/Telco-Customer-Churn-Prediction"
+target_url = "https://github.com/Om-codex/ML-Projects/tree/main/Telco-customer-churn-analysis"
 st.markdown(
     f"""
     <div class="footer-badge-wrapper">
@@ -1095,5 +944,10 @@ st.markdown(
     </div>
     """,
     unsafe_allow_html=True
-
 )
+# --- FORCE SCROLL TO TOP ON EVERY RERUN ---
+st.markdown("""
+<script>
+    window.scrollTo(0,0);
+</script>
+""", unsafe_allow_html=True)
