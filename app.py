@@ -16,6 +16,13 @@ import base64
 import time
 import numpy as np
 import pandas as pd
+import os
+def load_css():
+    css_file_path = os.path.join(os.path.dirname(__file__), "styles.css")
+    with open(css_file_path, "r") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+load_css()
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
@@ -41,8 +48,6 @@ def load_data():
 
 img_base64 = image_to_base64("churn_banner.png")
 
-with open("styles.css") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 logo = Image.open("logo.png")
 logo_base64 = image_to_base64("logo.png")  # ensure correct path
@@ -951,3 +956,4 @@ st.markdown("""
     window.scrollTo(0,0);
 </script>
 """, unsafe_allow_html=True)
+
