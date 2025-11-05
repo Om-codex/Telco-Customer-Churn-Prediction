@@ -1082,7 +1082,7 @@ if st.session_state.stage == 'Show_navigation':
                 *Thank you for exploring the app! Feel free to test different scenarios and see how customer behaviors influence churn probability.* 🚀
             """)
 
-target_url = "https://github.com/Om-codex/ML-Projects/tree/main/Telco-customer-churn-analysis"
+target_url = "https://github.com/Om-codex/Telco-Customer-Churn-Prediction"
 st.markdown(
     f"""
     <div class="footer-badge-wrapper">
@@ -1095,4 +1095,5 @@ st.markdown(
     </div>
     """,
     unsafe_allow_html=True
+
 )
