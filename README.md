@@ -20,18 +20,18 @@ This project aims to identify at-risk customers using historical service, billin
 ## 🖼️ App Screenshots
 
 ### Home Page
-![Home Page](./app_images/Screenshot 2025-11-06 075912.png)
+![Home Page](./app_images/Screenshot%202025-11-06%20075912.png)
 
 ### Prediction Interface
-![Prediction Page](./app_images/Screenshot 2025-11-06 080131.png)
-(./app_images/Screenshot 2025-11-06 080201.png)
+![Prediction Page](./app_images/Screenshot%202025-11-06%20080131.png)
+![Prediction Page 2](./app_images/Screenshot%202025-11-06%20080201.png)
 
 ### EDA Dashboard
-![EDA Dashboard](./app_images/Screenshot 2025-11-06 080017.png)
-(./app_images/Screenshot 2025-11-06 080047.png)
+![EDA Dashboard](./app_images/Screenshot%202025-11-06%20080017.png)
+![EDA Dashboard 2](./app_images/Screenshot%202025-11-06%20080047.png)
 
 ### Model Comparison
-![Model Comparison](./app_images/Screenshot 2025-11-06 080220.png)
+![Model Comparison](./app_images/Screenshot%202025-11-06%20080220.png)
 
 ---
 ## 📂 Dataset Overview
