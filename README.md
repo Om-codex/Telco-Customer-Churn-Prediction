@@ -17,7 +17,23 @@ Acquiring new customers is more expensive than retaining existing ones — hence
 This project aims to identify at-risk customers using historical service, billing, and contract data, enabling strategic retention actions.
 
 ---
+## 🖼️ App Screenshots
 
+### Home Page
+![Home Page](./app_images/Screenshot 2025-11-06 075912.png)
+
+### Prediction Interface
+![Prediction Page](./app_images/Screenshot 2025-11-06 080131.png)
+(./app_images/Screenshot 2025-11-06 080201.png)
+
+### EDA Dashboard
+![EDA Dashboard](./app_images/Screenshot 2025-11-06 080017.png)
+(./app_images/Screenshot 2025-11-06 080047.png)
+
+### Model Comparison
+![Model Comparison](./app_images/Screenshot 2025-11-06 080220.png)
+
+---
 ## 📂 Dataset Overview
 
 - **Rows:** ~7,000 customer records  
