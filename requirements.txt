@@ -9,4 +9,3 @@ joblib
 pillow
 scikit-learn
 os
-protobuf<4
