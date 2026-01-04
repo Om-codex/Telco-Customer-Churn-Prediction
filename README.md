@@ -5,7 +5,7 @@
 This repository presents a full machine learning pipeline for predicting customer churn for a telecom provider.  
 From exploratory data analysis (EDA), through feature engineering and model building, to deployment as a user-friendly Streamlit web app.
 
-💼 **Live App:** https://telco-customer-churn-prediction-om-codex.onrender.com/  
+💼 **Live App:** https://telco-customer-churn-prediction-om-codex.streamlit.app/
 🔗 **Repo:** https://github.com/Om-codex/Telco-Customer-Churn-Prediction
 
 ---
